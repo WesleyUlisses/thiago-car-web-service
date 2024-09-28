@@ -12,21 +12,21 @@ export const navItems: NavItem[] = [
   // {
   //   navCap: 'Ui Components',
   // },
-  // {
-  //   displayName: 'Badge',
-  //   iconName: 'rosette',
-  //   route: '/ui-components/badge',
-  // },
+  {
+    displayName: 'Compromissos',
+    iconName: 'address-book',
+    route: '/ui-components/badge',
+  },
   // {
   //   displayName: 'Chips',
   //   iconName: 'poker-chip',
   //   route: '/ui-components/chips',
   // },
-  // {
-  //   displayName: 'Lists',
-  //   iconName: 'list',
-  //   route: '/ui-components/lists',
-  // },
+  {
+    displayName: 'Usuarios',
+    iconName: 'users',
+    route: '/ui-components/lists',
+  },
   // {
   //   displayName: 'Menu',
   //   iconName: 'layout-navbar-expand',
@@ -53,11 +53,11 @@ export const navItems: NavItem[] = [
   // {
   //   navCap: 'Extra',
   // },
-  // {
-  //   displayName: 'Icons',
-  //   iconName: 'mood-smile',
-  //   route: '/extra/icons',
-  // },
+  {
+    displayName: 'Configurações',
+    iconName: 'adjustments-horizontal',
+    route: '/extra/icons',
+  },
   // {
   //   displayName: 'Sample Page',
   //   iconName: 'aperture',
