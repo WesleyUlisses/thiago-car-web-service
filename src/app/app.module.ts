@@ -1,50 +1,26 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AppLayoutModule } from './layout/app.layout.module';
+import { NotfoundComponent } from './demo/components/notfound/notfound.component';
+import { ProductService } from './demo/service/product.service';
+import { CountryService } from './demo/service/country.service';
+import { CustomerService } from './demo/service/customer.service';
+import { EventService } from './demo/service/event.service';
+import { IconService } from './demo/service/icon.service';
+import { NodeService } from './demo/service/node.service';
+import { PhotoService } from './demo/service/photo.service';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-// icons
-import { TablerIconsModule } from 'angular-tabler-icons';
-import * as TablerIcons from 'angular-tabler-icons/icons';
-
-//Import all material modules
-import { MaterialModule } from './material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-//Import Layouts
-import { FullComponent } from './layouts/full/full.component';
-import { BlankComponent } from './layouts/blank/blank.component';
-
-// Vertical Layout
-import { SidebarComponent } from './layouts/full/sidebar/sidebar.component';
-import { HeaderComponent } from './layouts/full/header/header.component';
-import { BrandingComponent } from './layouts/full/sidebar/branding.component';
-import { AppNavItemComponent } from './layouts/full/sidebar/nav-item/nav-item.component';
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    FullComponent,
-    BlankComponent,
-    SidebarComponent,
-    HeaderComponent,
-    BrandingComponent,
-    AppNavItemComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    TablerIconsModule.pick(TablerIcons),
-  ],
-  exports: [TablerIconsModule],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent, NotfoundComponent],
+    imports: [AppRoutingModule, AppLayoutModule, HttpClientModule],
+    providers: [
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
+        CountryService, CustomerService, EventService, IconService, NodeService,
+        PhotoService, ProductService
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
