@@ -62,5 +62,5 @@ export class InvalidStateDemoComponent implements OnInit {
 
         this.filteredCountries = filtered;
     }
-    
+
 }

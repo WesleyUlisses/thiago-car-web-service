@@ -1,0 +1,108 @@
+<div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card card-w-title">
+            <h5>Configurações</h5>
+            <p-menubar [model]="tieredItems">
+                <ng-template pTemplate="end"> </ng-template>
+            </p-menubar>
+        </div>
+    </div>
+
+    <!-- Painéis Condicionais -->
+    <div class="col-12" *ngIf="selectedPanel === 'customers'">
+        <div class="card">
+            <h5>Painel Geral</h5>
+            <h5>Escala</h5>
+            <div class="flex align-items-center">
+                <button
+                    icon="pi pi-minus"
+                    type="button"
+                    pButton
+                    (click)="decrementScale()"
+                    class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
+                    [disabled]="scale === scales[0]"
+                ></button>
+                <div class="flex gap-2 align-items-center">
+                    <i
+                        class="pi pi-circle-fill text-300"
+                        *ngFor="let s of scales"
+                        [ngClass]="{ 'text-primary-500': s === scale }"
+                    ></i>
+                </div>
+                <button
+                    icon="pi pi-plus"
+                    type="button"
+                    pButton
+                    (click)="incrementScale()"
+                    class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
+                    [disabled]="scale === scales[scales.length - 1]"
+                ></button>
+            </div>
+
+            <ng-container *ngIf="!minimal">
+                <h5>Tipo de Menu</h5>
+                <div class="field-radiobutton">
+                    <p-radioButton
+                        name="menuMode"
+                        value="static"
+                        [(ngModel)]="menuMode"
+                        inputId="mode1"
+                    ></p-radioButton>
+                    <label for="mode1">Estático</label>
+                </div>
+                <div class="field-radiobutton">
+                    <p-radioButton
+                        name="menuMode"
+                        value="overlay"
+                        [(ngModel)]="menuMode"
+                        inputId="mode2"
+                    ></p-radioButton>
+                    <label for="mode2">Sobreposto</label>
+                </div>
+            </ng-container>
+
+            <h5>Tema</h5>
+            <div class="field col-12 md:col-4">
+                <span class="p-float-label">
+                    <p-dropdown
+                        inputId="themeDropdown"
+                        [autoDisplayFirst]="false"
+                        [options]="themes"
+                        [(ngModel)]="selectedTheme"
+                        optionLabel="label"
+                        (onChange)="onThemeChange($event)"
+                    ></p-dropdown>
+                    <label for="themeDropdown">Selecione o Tema</label>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'orders'">
+        <div class="card">
+            <h5>Painel de Orders</h5>
+            <p>Conteúdo relacionado a Orders.</p>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'shipments'">
+        <div class="card">
+            <h5>Painel de Shipments</h5>
+            <p>Conteúdo relacionado a Shipments.</p>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'profile'">
+        <div class="card">
+            <h5>Painel de Profile</h5>
+            <p>Configurações e informações do perfil.</p>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'quit'">
+        <div class="card">
+            <h5>Sair</h5>
+            <p>Você está prestes a sair.</p>
+        </div>
+    </div>
+</div>

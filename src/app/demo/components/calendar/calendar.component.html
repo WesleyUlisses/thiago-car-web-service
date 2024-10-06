@@ -1,0 +1,26 @@
+<div class="calendar-container">
+    <div class="header">
+        <h2>{{ currentMonth | date : "MMMM yyyy" }}</h2>
+        <button (click)="prevMonth()">&lt;</button>
+        <button (click)="nextMonth()">&gt;</button>
+    </div>
+    <div class="days">
+        <div class="day" *ngFor="let day of days">
+            {{ day }}
+        </div>
+    </div>
+    <div class="dates">
+        <div class="date" *ngFor="let date of dates">
+            <div class="date-number">{{ date.date }}</div>
+            <div class="events" *ngFor="let event of date.events">
+                <strong>{{ event.customerName }}</strong
+                ><br />
+                Veículo: {{ event.vehicleModel }}<br />
+                Serviço: {{ event.serviceType }}<br />
+                Horário: {{ event.serviceTime }}<br />
+                Mecânico: {{ event.mechanicName }}<br />
+                Status: {{ event.status }}<br />
+            </div>
+        </div>
+    </div>
+</div>

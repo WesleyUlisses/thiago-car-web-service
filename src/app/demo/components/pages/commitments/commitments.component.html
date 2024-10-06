@@ -1,0 +1,708 @@
+<div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card card-w-title">
+            <p-menubar [model]="tieredItems">
+                <ng-template pTemplate="end"> </ng-template>
+            </p-menubar>
+        </div>
+    </div>
+
+    <!-- Painéis Condicionais -->
+    <div class="col-12" *ngIf="selectedPanel === 'customers'">
+        <div class="card">
+            <div class="grid">
+                <div class="col-12">
+                        <p-toast></p-toast>
+
+                        <p-table
+                            #dt
+                            [value]="appointments"
+                            [columns]="cols"
+                            responsiveLayout="scroll"
+                            [rows]="10"
+                            [globalFilterFields]="[
+                                'customerName',
+                                'serviceType',
+                                'mechanicName',
+                                'status'
+                            ]"
+                            [paginator]="true"
+                            [rowsPerPageOptions]="rowsPerPageOptions"
+                            [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} compromissos"
+                            [(selection)]="selectedAppointments"
+                            selectionMode="multiple"
+                            [rowHover]="true"
+                            dataKey="id"
+                        >
+                            <ng-template pTemplate="caption">
+                                <div
+                                    class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                                >
+
+                                    <span
+                                        class="block mt-2 md:mt-0 p-input-icon-left"
+                                    >
+                                        <i class="pi pi-search"></i>
+                                        <input
+                                            pInputText
+                                            type="text"
+                                            (input)="onGlobalFilter(dt, $event)"
+                                            placeholder="Buscar..."
+                                            class="w-full sm:w-auto"
+                                        />
+                                    </span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 3rem">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th pSortableColumn="customerName">
+                                        Cliente
+                                        <p-sortIcon
+                                            field="customerName"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="vehicleModel">
+                                        Carro
+                                        <p-sortIcon
+                                            field="vehicleModel"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="serviceType">
+                                        Serviço
+                                        <p-sortIcon
+                                            field="serviceType"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="serviceDate">
+                                        Data
+                                        <p-sortIcon
+                                            field="serviceDate"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="serviceTime">
+                                        Horário
+                                        <p-sortIcon
+                                            field="serviceTime"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <!-- <th pSortableColumn="mechanicName">Mecânico <p-sortIcon field="mechanicName"></p-sortIcon></th> -->
+                                    <th pSortableColumn="status">
+                                        Status
+                                        <p-sortIcon field="status"></p-sortIcon>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-appointment>
+                                <tr>
+                                    <td>
+                                        <p-tableCheckbox
+                                            [value]="appointment"
+                                        ></p-tableCheckbox>
+                                    </td>
+                                    <td style="width: 14%; min-width: 10rem">
+                                        <span class="p-column-title"
+                                            >Cliente</span
+                                        >
+                                        {{ appointment.customerName }}
+                                    </td>
+                                    <td style="width: 14%; min-width: 10rem">
+                                        <span class="p-column-title"
+                                            >Carro</span
+                                        >
+                                        {{ appointment.vehicleBrand }}
+                                        {{ appointment.vehicleModel }}
+                                        {{ appointment.vehicleYear }}
+                                    </td>
+                                    <td style="width: 14%; min-width: 10rem">
+                                        <span class="p-column-title"
+                                            >Serviço</span
+                                        >
+                                        {{ appointment.serviceType }}
+                                    </td>
+                                    <td style="width: 14%; min-width: 10rem">
+                                        <span class="p-column-title">Data</span>
+                                        {{
+                                            appointment.serviceDate
+                                                | date : "dd/MM/yyyy"
+                                        }}
+                                    </td>
+                                    <td style="width: 14%; min-width: 10rem">
+                                        <span class="p-column-title"
+                                            >Horário</span
+                                        >
+                                        {{ appointment.serviceTime }}
+                                    </td>
+                                    <!-- <td style="width:14%; min-width:10rem;"><span class="p-column-title">Mecânico</span>
+                                        {{appointment.mechanicName}}
+                                    </td> -->
+                                    <td style="width: 14%; min-width: 10rem">
+                                        <span class="p-column-title"
+                                            >Status</span
+                                        >
+                                        <span
+                                            [class]="
+                                                'appointment-badge status-' +
+                                                (appointment.status
+                                                    ? appointment.status.toLowerCase()
+                                                    : '')
+                                            "
+                                            >{{ appointment.status }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <div class="flex">
+                                            <button
+                                                pButton
+                                                pRipple
+                                                icon="pi pi-eye"
+                                                class="p-button-rounded p-button-success mr-2"
+                                                (click)="
+                                                    editAppointment(appointment)
+                                                "
+                                            ></button>
+                                            <button
+                                                pButton
+                                                pRipple
+                                                icon="pi pi-pencil"
+                                                class="p-button-rounded p-button-help mr-2"
+                                                (click)="
+                                                    editAppointment(appointment)
+                                                "
+                                            ></button>
+                                            <button
+                                                pButton
+                                                pRipple
+                                                icon="pi pi-ban"
+                                                class="p-button-rounded p-button-rounded"
+                                                (click)="
+                                                    deleteAppointment(
+                                                        appointment
+                                                    )
+                                                "
+                                            ></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+
+                    <!-- Diálogo de Compromisso -->
+                    <p-dialog
+                        [(visible)]="appointmentDialog"
+                        [style]="{ width: '600px' }"
+                        header="Detalhes do Compromisso"
+                        [modal]="true"
+                        class="p-fluid"
+                    >
+                        <ng-template pTemplate="content">
+                            <div class="field">
+                                <label for="customerName"
+                                    >Nome do Cliente</label
+                                >
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="customerName"
+                                    [(ngModel)]="appointment.customerName"
+                                    required
+                                    autofocus
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.customerName
+                                    }"
+                                />
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.customerName
+                                    "
+                                    >Nome do cliente é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="customerEmail">E-mail</label>
+                                <input
+                                    type="email"
+                                    pInputText
+                                    id="customerEmail"
+                                    [(ngModel)]="appointment.customerEmail"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.customerEmail
+                                    }"
+                                />
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.customerEmail
+                                    "
+                                    >E-mail é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="customerPhone">Telefone</label>
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="customerPhone"
+                                    [(ngModel)]="appointment.customerPhone"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.customerPhone
+                                    }"
+                                />
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.customerPhone
+                                    "
+                                    >Telefone é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="serviceAddress"
+                                    >Endereço do Serviço</label
+                                >
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="serviceAddress"
+                                    [(ngModel)]="appointment.serviceAddress"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.serviceAddress
+                                    }"
+                                />
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.serviceAddress
+                                    "
+                                    >Endereço é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="vehicleBrand">Marca do Carro</label>
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="vehicleBrand"
+                                    [(ngModel)]="appointment.vehicleBrand"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.vehicleBrand
+                                    }"
+                                />
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.vehicleBrand
+                                    "
+                                    >Marca do carro é obrigatória.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="vehicleModel"
+                                    >Modelo do Carro</label
+                                >
+                                <input
+                                    type="text"
+                                    pInputText
+                                    id="vehicleModel"
+                                    [(ngModel)]="appointment.vehicleModel"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.vehicleModel
+                                    }"
+                                />
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.vehicleModel
+                                    "
+                                    >Modelo do carro é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="vehicleYear">Ano do Carro</label>
+                                <p-inputNumber
+                                    id="vehicleYear"
+                                    [(ngModel)]="appointment.vehicleYear"
+                                    [min]="1900"
+                                    [max]="currentYear"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.vehicleYear
+                                    }"
+                                ></p-inputNumber>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.vehicleYear
+                                    "
+                                    >Ano do carro é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="serviceType">Tipo de Serviço</label>
+                                <p-dropdown
+                                    [(ngModel)]="appointment.serviceType"
+                                    inputId="serviceType"
+                                    [options]="serviceTypes"
+                                    placeholder="Selecione"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.serviceType
+                                    }"
+                                >
+                                    <ng-template pTemplate="selectedItem">
+                                        {{ appointment.serviceType }}
+                                    </ng-template>
+                                    <ng-template let-option pTemplate="item">
+                                        {{ option.label }}
+                                    </ng-template>
+                                </p-dropdown>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.serviceType
+                                    "
+                                    >Tipo de serviço é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="serviceDescription"
+                                    >Descrição do Serviço</label
+                                >
+                                <textarea
+                                    id="serviceDescription"
+                                    pInputTextarea
+                                    [(ngModel)]="appointment.serviceDescription"
+                                    rows="3"
+                                    cols="20"
+                                ></textarea>
+                            </div>
+                            <div class="field">
+                                <label for="serviceDate">Data do Serviço</label>
+                                <p-calendar
+                                    id="serviceDate"
+                                    [(ngModel)]="appointment.serviceDate"
+                                    dateFormat="dd/mm/yy"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.serviceDate
+                                    }"
+                                ></p-calendar>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.serviceDate
+                                    "
+                                    >Data do serviço é obrigatória.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="serviceTime"
+                                    >Horário do Serviço</label
+                                >
+                                <p-dropdown
+                                    [(ngModel)]="appointment.serviceTime"
+                                    inputId="serviceTime"
+                                    [options]="[
+                                        {
+                                            label: '08:00 - 09:00',
+                                            value: '08:00 - 09:00'
+                                        },
+                                        {
+                                            label: '09:00 - 10:00',
+                                            value: '09:00 - 10:00'
+                                        },
+                                        {
+                                            label: '10:00 - 11:00',
+                                            value: '10:00 - 11:00'
+                                        },
+                                        {
+                                            label: '11:00 - 12:00',
+                                            value: '11:00 - 12:00'
+                                        },
+                                        {
+                                            label: '14:00 - 15:00',
+                                            value: '14:00 - 15:00'
+                                        },
+                                        {
+                                            label: '15:00 - 16:00',
+                                            value: '15:00 - 16:00'
+                                        },
+                                        {
+                                            label: '16:00 - 17:00',
+                                            value: '16:00 - 17:00'
+                                        }
+                                    ]"
+                                    placeholder="Selecione"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.serviceTime
+                                    }"
+                                >
+                                </p-dropdown>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.serviceTime
+                                    "
+                                    >Horário do serviço é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="mechanicName">Mecânico</label>
+                                <p-dropdown
+                                    [(ngModel)]="appointment.mechanicName"
+                                    inputId="mechanicName"
+                                    [options]="mechanics"
+                                    placeholder="Selecione"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.mechanicName
+                                    }"
+                                >
+                                    <ng-template pTemplate="selectedItem">
+                                        {{ appointment.mechanicName }}
+                                    </ng-template>
+                                    <ng-template let-option pTemplate="item">
+                                        {{ option.label }}
+                                    </ng-template>
+                                </p-dropdown>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.mechanicName
+                                    "
+                                    >Mecânico é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="status">Status</label>
+                                <p-dropdown
+                                    [(ngModel)]="appointment.status"
+                                    inputId="status"
+                                    [options]="statuses"
+                                    placeholder="Selecione"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted && !appointment.status
+                                    }"
+                                >
+                                    <ng-template pTemplate="selectedItem">
+                                        <span
+                                            [class]="
+                                                'appointment-badge status-' +
+                                                (appointment.status
+                                                    ? appointment.status.toLowerCase()
+                                                    : '')
+                                            "
+                                            >{{ appointment.status }}</span
+                                        >
+                                    </ng-template>
+                                    <ng-template let-option pTemplate="item">
+                                        <span
+                                            [class]="
+                                                'appointment-badge status-' +
+                                                option.value.toLowerCase()
+                                            "
+                                            >{{ option.label }}</span
+                                        >
+                                    </ng-template>
+                                </p-dropdown>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="submitted && !appointment.status"
+                                    >Status é obrigatório.</small
+                                >
+                            </div>
+                            <div class="field">
+                                <label for="estimatedValue"
+                                    >Valor Estimado</label
+                                >
+                                <p-inputNumber
+                                    id="estimatedValue"
+                                    [(ngModel)]="appointment.estimatedValue"
+                                    mode="currency"
+                                    currency="USD"
+                                    locale="en-US"
+                                    required
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty':
+                                            submitted &&
+                                            !appointment.estimatedValue
+                                    }"
+                                ></p-inputNumber>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        submitted && !appointment.estimatedValue
+                                    "
+                                    >Valor estimado é obrigatório.</small
+                                >
+                            </div>
+                        </ng-template>
+
+                        <ng-template pTemplate="footer">
+                            <button
+                                pButton
+                                pRipple
+                                label="Cancelar"
+                                icon="pi pi-times"
+                                class="p-button-text"
+                                (click)="hideDialog()"
+                            ></button>
+                            <button
+                                pButton
+                                pRipple
+                                label="Salvar"
+                                icon="pi pi-check"
+                                class="p-button-text"
+                                (click)="saveAppointment()"
+                            ></button>
+                        </ng-template>
+                    </p-dialog>
+
+                    <!-- Diálogo de Deletar Compromisso -->
+                    <p-dialog
+                        [(visible)]="deleteAppointmentDialog"
+                        header="Confirmar"
+                        [modal]="true"
+                        [style]="{ width: '450px' }"
+                    >
+                        <div
+                            class="flex align-items-center justify-content-center"
+                        >
+                            <i
+                                class="pi pi-exclamation-triangle mr-3"
+                                style="font-size: 2rem"
+                            ></i>
+                            <span *ngIf="appointment"
+                                >Tem certeza que deseja rejeitar o compromisso
+                                de <b>{{ appointment.customerName }}</b
+                                >?</span
+                            >
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <button
+                                pButton
+                                pRipple
+                                icon="pi pi-times"
+                                class="p-button-text"
+                                label="Não"
+                                (click)="deleteAppointmentDialog = false"
+                            ></button>
+                            <button
+                                pButton
+                                pRipple
+                                icon="pi pi-check"
+                                class="p-button-text"
+                                label="Sim"
+                                (click)="confirmDelete()"
+                            ></button>
+                        </ng-template>
+                    </p-dialog>
+
+                    <!-- Diálogo de Deletar Múltiplos Compromissos -->
+                    <p-dialog
+                        [(visible)]="deleteAppointmentsDialog"
+                        header="Confirmar"
+                        [modal]="true"
+                        [style]="{ width: '450px' }"
+                    >
+                        <div
+                            class="flex align-items-center justify-content-center"
+                        >
+                            <i
+                                class="pi pi-exclamation-triangle mr-3"
+                                style="font-size: 2rem"
+                            ></i>
+                            <span
+                                >Tem certeza que deseja deletar os compromissos
+                                selecionados?</span
+                            >
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <button
+                                pButton
+                                pRipple
+                                icon="pi pi-times"
+                                class="p-button-text"
+                                label="Não"
+                                (click)="deleteAppointmentsDialog = false"
+                            ></button>
+                            <button
+                                pButton
+                                pRipple
+                                icon="pi pi-check"
+                                class="p-button-text"
+                                label="Sim"
+                                (click)="confirmDeleteSelected()"
+                            ></button>
+                        </ng-template>
+                    </p-dialog>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tela 2 -->
+    <div class="col-12" *ngIf="selectedPanel === 'calendar'">
+        <div class="card">
+            <h5>Painel de Pedidos</h5>
+            <app-calendar/>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'kanban'">
+        <div class="card">
+            <h5>Painel de Envios</h5>
+            <p>Conteúdo relacionado a Envios.</p>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'profile'">
+        <div class="card">
+            <h5>Painel de Perfil</h5>
+            <p>Configurações e informações do perfil.</p>
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="selectedPanel === 'quit'">
+        <div class="card">
+            <h5>Sair</h5>
+            <p>Você está prestes a sair.</p>
+        </div>
+    </div>
+</div>
