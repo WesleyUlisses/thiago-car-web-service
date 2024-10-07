@@ -3,11 +3,12 @@ import { Appointment } from 'src/app/demo/models/appointment';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { AppointmentService } from 'src/app/demo/service/appointment.service';
+import { CalendarComponent } from '../../calendar/calendar.component';
 
 @Component({
     selector: 'app-commitments',
     templateUrl: './commitments.component.html',
-    providers: [MessageService]
+    providers: [MessageService, CalendarComponent  ]
 })
 export class CommitmentsComponent implements OnInit {
 

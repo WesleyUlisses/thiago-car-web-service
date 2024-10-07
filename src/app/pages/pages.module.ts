@@ -8,7 +8,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 // icons
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
-import { AppDashboardComponent } from './dashboard/dashboard.component';
+import { AppDashboardComponent } from './home/dashboard.component';
 
 @NgModule({
   declarations: [AppDashboardComponent],

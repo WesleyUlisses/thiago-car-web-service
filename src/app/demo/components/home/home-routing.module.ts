@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard.component';
+import { HomeComponent } from './home.component';
 import { PagesRoutingModule } from '../pages/pages-routing.module';
 import { CommitmentsModule } from '../pages/commitments/commitments.module';
 import { SettingsModule } from '../pages/settings/settings.module';
@@ -8,7 +8,7 @@ import { FinanceModule } from '../pages/finance/finance.module';
 import { ServicesModule } from '../pages/services/services.module';
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: '', component: DashboardComponent },
+        { path: '', component: HomeComponent },
         {
           path: 'commitments', loadChildren: () => import('../pages/commitments/commitments.module').then(m => m.CommitmentsModule)
         },
@@ -20,8 +20,11 @@ import { ServicesModule } from '../pages/services/services.module';
         },
         {
             path: 'services', loadChildren: () => import('../pages/services/services.module').then(m => m.ServicesModule)
+        },
+        {
+            path: 'dashboard', loadChildren: () => import('../pages/dashboard/dashboard.module').then(m => m.DashboardModule)
         }
     ])],
     exports: [RouterModule]
 })
-export class DashboardsRoutingModule { }
+export class HomeRoutingModule { }

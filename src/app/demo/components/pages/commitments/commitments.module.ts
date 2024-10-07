@@ -24,7 +24,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { StepsModule } from 'primeng/steps';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TieredMenuModule } from 'primeng/tieredmenu';
-import { CalendarModule } from '../../calendar/calendar.module';
+import { CalendareModule } from '../../calendar/calendar.module';
 
 @NgModule({
     imports: [
@@ -52,7 +52,7 @@ import { CalendarModule } from '../../calendar/calendar.module';
 		ContextMenuModule,
 		MegaMenuModule,
 		PanelMenuModule,
-        CalendarModule,
+        CalendareModule,
     ],
     declarations: [CommitmentsComponent]
 })

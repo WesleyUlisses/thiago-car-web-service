@@ -1,26 +1,38 @@
-<div class="calendar-container">
-    <div class="header">
-        <h2>{{ currentMonth | date : "MMMM yyyy" }}</h2>
-        <button (click)="prevMonth()">&lt;</button>
-        <button (click)="nextMonth()">&gt;</button>
-    </div>
-    <div class="days">
-        <div class="day" *ngFor="let day of days">
-            {{ day }}
-        </div>
-    </div>
-    <div class="dates">
-        <div class="date" *ngFor="let date of dates">
-            <div class="date-number">{{ date.date }}</div>
-            <div class="events" *ngFor="let event of date.events">
-                <strong>{{ event.customerName }}</strong
-                ><br />
-                Veículo: {{ event.vehicleModel }}<br />
-                Serviço: {{ event.serviceType }}<br />
-                Horário: {{ event.serviceTime }}<br />
-                Mecânico: {{ event.mechanicName }}<br />
-                Status: {{ event.status }}<br />
+<div class="calendar">
+
+    <div class="calendar-container">
+        <div *ngFor="let day of daysInMonth" class="calendar-day">
+          <span>{{ day.date }}</span>
+
+          <!-- Verifica se há eventos no dia -->
+          <div *ngIf="hasEvents(day.date)" class="event-markers">
+            <!-- Exibe retângulos clicáveis para os eventos -->
+            <div *ngFor="let event of getEventsForDay(day.date)"
+                 class="event-marker"
+                 (click)="openEventModal(day.date, event)">
+              {{ event.serviceType }}
             </div>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- Modal para adicionar eventos -->
+    <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+            <span class="close" (click)="closeModal()">&times;</span>
+            <h2>Adicionar Evento</h2>
+            <form (ngSubmit)="addEvent()">
+                <label for="event-name">Nome do Evento:</label>
+                <input
+                    [(ngModel)]="eventName"
+                    name="eventName"
+                    type="text"
+                    id="event-name"
+                    required
+                />
+                <button type="submit">Salvar Evento</button>
+            </form>
         </div>
     </div>
 </div>

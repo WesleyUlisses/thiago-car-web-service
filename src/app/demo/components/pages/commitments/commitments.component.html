@@ -681,7 +681,10 @@
     <div class="col-12" *ngIf="selectedPanel === 'calendar'">
         <div class="card">
             <h5>Painel de Pedidos</h5>
-            <app-calendar/>
+            <div class="flex flex-column md:justify-content-between md:align-items-center">
+                <app-calendar/>
+            </div>
+
         </div>
     </div>
 

@@ -1,31 +1,25 @@
+
+import { CalendarComponent } from './calendar.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CalendarComponent } from './calendar.component';
-import { ChartModule } from 'primeng/chart';
-import { MenuModule } from 'primeng/menu';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { StyleClassModule } from 'primeng/styleclass';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { CalendarRoutingModule } from './calendar-routing.module';
-import { SettingsModule } from '../pages/settings/settings.module';
-import { DatePipe } from '@angular/common';
+import { FlatpickrModule } from 'angularx-flatpickr';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        ChartModule,
-        MenuModule,
-        TableModule,
-        StyleClassModule,
-        PanelMenuModule,
-        ButtonModule,
-        CalendarRoutingModule,
-        SettingsModule
-    ],
+        NgbModalModule,
+        FlatpickrModule.forRoot(),
+        CalendarModule.forRoot({
+          provide: DateAdapter,
+          useFactory: adapterFactory,
+        }),
+      ],
     declarations: [CalendarComponent],
-    providers: [DatePipe]
+    exports: [CalendarComponent],
 })
-export class CalendarModule { }
+export class CalendareModule { }
