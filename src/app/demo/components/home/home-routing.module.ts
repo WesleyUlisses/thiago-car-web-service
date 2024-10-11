@@ -6,6 +6,7 @@ import { CommitmentsModule } from '../pages/commitments/commitments.module';
 import { SettingsModule } from '../pages/settings/settings.module';
 import { FinanceModule } from '../pages/finance/finance.module';
 import { ServicesModule } from '../pages/services/services.module';
+import { AvailabilityModule } from '../pages/availability/availability.module';
 @NgModule({
     imports: [RouterModule.forChild([
         { path: '', component: HomeComponent },
@@ -23,6 +24,9 @@ import { ServicesModule } from '../pages/services/services.module';
         },
         {
             path: 'dashboard', loadChildren: () => import('../pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+        },
+        {
+            path: 'availability', loadChildren: () => import('../pages/availability/availability.module').then(m => m.AvailabilityModule)
         }
     ])],
     exports: [RouterModule]

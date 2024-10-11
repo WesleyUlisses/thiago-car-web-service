@@ -1,0 +1,81 @@
+.kanban-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: 70vh;
+    padding: 2% 10%;
+
+}
+
+.kanban-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+.kanban-columns {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-container {
+    min-height: 100px;
+    margin-top: 10px;
+    border: 1px dashed #ccc;
+    padding: 10px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: move;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.add-card-btn,
+.remove-column-btn,
+.remove-card-btn,
+.add-column-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-card-btn i {
+    color: green;
+}
+
+.remove-column-btn i,
+.remove-card-btn i {
+    color: red;
+}
+
+.add-column-btn i {
+    color: blue;
+}

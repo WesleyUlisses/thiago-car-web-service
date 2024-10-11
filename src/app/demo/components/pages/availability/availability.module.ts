@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CommitmentsRoutingModule } from './commitments-routing.module';
-import { CommitmentsComponent } from './commitments.component';
+import { CommitmentsRoutingModule } from './availability-routing.module';
+import {AvailabilityComponent } from './availability.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -56,6 +56,6 @@ import { KanbanBoardModule } from '../../kanban/kanban.module';
         CalendareModule,
         KanbanBoardModule
     ],
-    declarations: [CommitmentsComponent]
+    declarations: [AvailabilityComponent]
 })
-export class CommitmentsModule { }
+export class AvailabilityModule { }

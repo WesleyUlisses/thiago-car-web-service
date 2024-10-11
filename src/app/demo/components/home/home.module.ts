@@ -12,6 +12,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { SettingsModule } from '../pages/settings/settings.module';
 import { ServicesModule } from '../pages/services/services.module';
 import { DashboardModule } from '../pages/dashboard/dashboard.module';
+import { AvailabilityModule } from '../pages/availability/availability.module';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { DashboardModule } from '../pages/dashboard/dashboard.module';
         HomeRoutingModule,
         SettingsModule,
         ServicesModule,
-        DashboardModule
+        DashboardModule,
+        AvailabilityModule
     ],
     declarations: [HomeComponent]
 })

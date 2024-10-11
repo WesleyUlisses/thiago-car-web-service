@@ -1,0 +1,211 @@
+<div class="kanban-board">
+
+    <!-- <div class="kanban-header">
+        <h1>Kanban Board</h1>
+    </div> -->
+
+    <div class="btn-container">
+        <button class="p-element p-ripple p-button-secondary p-button p-component" (click)="openNewColumnDialog()">
+            <i class="fas fa-plus"></i> Adicionar Coluna
+        </button>
+    </div>
+
+    <div class="kanban-columns">
+        <div
+            *ngFor="let column of columns"
+            class="column"
+            draggable="true"
+            (dragstart)="dragStart($event, column.id)"
+        >
+            <div class="column-header">
+                <h2 contenteditable="true">{{ column.name }}</h2>
+                <button
+                    class="remove-column-btn"
+                    (click)="confirmDeleteColumn(column)"
+                >
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <button class="add-card-btn" (click)="openNewCardDialog(column)">
+                <i class="fas fa-plus"></i> Adicionar Tarefa
+            </button>
+
+            <div
+                class="card-container"
+                (dragover)="allowDrop($event)"
+                (drop)="dropCard($event, column)"
+            >
+                <div
+                    *ngFor="let card of column.cards"
+                    class="card"
+                    draggable="true"
+                    (dragstart)="dragCardStart($event, card, column)"
+                >
+                    {{ card.name }}
+                    <button
+                        class="remove-card-btn"
+                        (click)="confirmDeleteCard(card, column)"
+                    >
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação para remover coluna -->
+    <p-dialog
+        [(visible)]="deleteColumnDialog"
+        header="Confirmar"
+        [modal]="true"
+        [style]="{ width: '450px' }"
+    >
+        <div class="flex align-items-center justify-content-center">
+            <i
+                class="pi pi-exclamation-triangle mr-3"
+                style="font-size: 2rem"
+            ></i>
+            <span *ngIf="selectedColumn">
+                Tem certeza que deseja remover a coluna
+                <b>{{ selectedColumn.name }}</b
+                >?
+            </span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                class="p-button-text"
+                label="Não"
+                (click)="deleteColumnDialog = false"
+            ></button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-check"
+                class="p-button-text"
+                label="Sim"
+                (click)="removeColumn()"
+            ></button>
+        </ng-template>
+    </p-dialog>
+
+    <!-- Modal de confirmação para remover cartão -->
+    <p-dialog
+        [(visible)]="deleteCardDialog"
+        header="Confirmar"
+        [modal]="true"
+        [style]="{ width: '450px' }"
+    >
+        <div class="flex align-items-center justify-content-center">
+            <i
+                class="pi pi-exclamation-triangle mr-3"
+                style="font-size: 2rem"
+            ></i>
+            <span *ngIf="selectedCard">
+                Tem certeza que deseja remover o cartão
+                <b>{{ selectedCard.card.name }}</b> da coluna
+                <b>{{ selectedCard.column.name }}</b
+                >?
+            </span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                class="p-button-text"
+                label="Não"
+                (click)="deleteCardDialog = false"
+            ></button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-check"
+                class="p-button-text"
+                label="Sim"
+                (click)="removeCard()"
+            ></button>
+        </ng-template>
+    </p-dialog>
+
+    <!-- modal para criar um cartão -->
+    <p-dialog
+        [(visible)]="addCardDialog"
+        header="Adicionar Cartão"
+        [modal]="true"
+        [style]="{ width: '450px' }"
+    >
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="cardName">Nome</label>
+                <input
+                    id="cardName"
+                    type="text"
+                    pInputText
+                    [(ngModel)]="newCardName"
+                />
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                class="p-button-text"
+                label="Cancelar"
+                (click)="addCardDialog = false"
+            ></button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-check"
+                class="p-button-text"
+                label="Adicionar"
+                (click)="saveCard()"
+            ></button>
+        </ng-template>
+    </p-dialog>
+
+    <!-- modal para criar uma coluna -->
+    <p-dialog
+        [(visible)]="addColumnDialog"
+        header="Adicionar Coluna"
+        [modal]="true"
+        [style]="{ width: '450px' }"
+    >
+
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="columnName">Nome</label>
+                <input
+                    id="columnName"
+                    type="text"
+                    pInputText
+                    [(ngModel)]="newColumnName"
+                    oninput="this.value = this.value.toUpperCase()"
+                />
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                class="p-button-text"
+                label="Cancelar"
+                (click)="addColumnDialog = false"
+            ></button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-check"
+                class="p-button-text"
+                label="Adicionar"
+                (click)="saveColumn(this.newColumnName)"
+            ></button>
+        </ng-template>
+
+    </p-dialog>
+</div>

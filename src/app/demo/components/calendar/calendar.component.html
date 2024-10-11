@@ -1,38 +1,6 @@
 <div class="calendar">
-
-    <div class="calendar-container">
-        <div *ngFor="let day of daysInMonth" class="calendar-day">
-          <span>{{ day.date }}</span>
-
-          <!-- Verifica se há eventos no dia -->
-          <div *ngIf="hasEvents(day.date)" class="event-markers">
-            <!-- Exibe retângulos clicáveis para os eventos -->
-            <div *ngFor="let event of getEventsForDay(day.date)"
-                 class="event-marker"
-                 (click)="openEventModal(day.date, event)">
-              {{ event.serviceType }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-    <!-- Modal para adicionar eventos -->
-    <div class="modal" *ngIf="showModal">
-        <div class="modal-content">
-            <span class="close" (click)="closeModal()">&times;</span>
-            <h2>Adicionar Evento</h2>
-            <form (ngSubmit)="addEvent()">
-                <label for="event-name">Nome do Evento:</label>
-                <input
-                    [(ngModel)]="eventName"
-                    name="eventName"
-                    type="text"
-                    id="event-name"
-                    required
-                />
-                <button type="submit">Salvar Evento</button>
-            </form>
-        </div>
-    </div>
+    <ejs-schedule
+        [selectedDate]="selectedDate"
+        [eventSettings]="eventSettings"
+    ></ejs-schedule>
 </div>
