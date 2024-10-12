@@ -8,7 +8,7 @@ import { CalendarComponent } from '../../calendar/calendar.component';
 @Component({
     selector: 'app-availability',
     templateUrl: './availability.component.html',
-    providers: [MessageService, CalendarComponent  ]
+    providers: [MessageService, CalendarComponent]
 })
 export class AvailabilityComponent implements OnInit {
 
@@ -61,7 +61,7 @@ export class AvailabilityComponent implements OnInit {
     tieredItems: any[];
 
     // Painel selecionado
-    selectedPanel: string = 'customers';
+    selectedPanel: string = 'availability-table';
     rowsPerPageOptions = [10, 20, 30];
 
     constructor(private appointmentService: AppointmentService, private messageService: MessageService) { }
@@ -72,12 +72,11 @@ export class AvailabilityComponent implements OnInit {
         this.appointments = this.dataMock;
 
         this.cols = [
-            { field: 'customerName', header: 'Cliente' },
-            { field: 'vehicleModel', header: 'Carro' },
-            { field: 'serviceType', header: 'Serviço' },
-            { field: 'serviceDate', header: 'Data' },
-            { field: 'serviceTime', header: 'Horário' },
-            { field: 'mechanicName', header: 'Mecânico' },
+            { field: 'date', header: 'Data' },
+            { field: 'startTime', header: 'Horário de Início' },
+            { field: 'endTime', header: 'Horário de Fim' },
+            { field: 'recurrency', header: 'Dias Recorrentes' },
+            { field: 'serviceTime', header: 'Períodos de Tempo' },
             { field: 'status', header: 'Status' }
         ];
 
@@ -94,112 +93,96 @@ export class AvailabilityComponent implements OnInit {
                     this.selectedPanel = 'calendar';
                 }
             },
-            {
-                label: 'Kanban',
-                command: () => {
-                    this.selectedPanel = 'kanban';
-                }
-            },
-            // {
-            //     label: 'Perfil',
-            //     command: () => {
-            //         this.selectedPanel = 'profile';
-            //     }
-            // },
-            // {
-            //     label: 'Sair',
-            //     command: () => {
-            //         this.selectedPanel = 'quit';
-            //     }
-            // }
+
+
         ];
 
-}
+    }
 
-openNew() {
-    this.appointment = {};
-    this.submitted = false;
-    this.appointmentDialog = true;
-}
+    openNew() {
+        this.appointment = {};
+        this.submitted = false;
+        this.appointmentDialog = true;
+    }
 
-deleteSelectedAppointments() {
-    this.deleteAppointmentsDialog = true;
-}
+    deleteSelectedAppointments() {
+        this.deleteAppointmentsDialog = true;
+    }
 
-editAppointment(appointment: Appointment) {
-    this.appointment = { ...appointment };
-    this.appointmentDialog = true;
-}
+    editAppointment(appointment: Appointment) {
+        this.appointment = { ...appointment };
+        this.appointmentDialog = true;
+    }
 
-deleteAppointment(appointment: Appointment) {
-    this.deleteAppointmentDialog = true;
-    this.appointment = { ...appointment };
-}
+    deleteAppointment(appointment: Appointment) {
+        this.deleteAppointmentDialog = true;
+        this.appointment = { ...appointment };
+    }
 
-confirmDeleteSelected() {
-    const ids = this.selectedAppointments.map(a => a.id!);
-    this.appointmentService.deleteAppointments(ids).then(() => {
-        this.appointments = this.appointments.filter(a => !ids.includes(a.id!));
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromissos deletados', life: 3000 });
-        this.selectedAppointments = [];
-        this.deleteAppointmentsDialog = false;
-    });
-}
-
-confirmDelete() {
-    if (this.appointment.id) {
-        this.appointmentService.deleteAppointment(this.appointment.id).then(() => {
-            this.appointments = this.appointments.filter(a => a.id !== this.appointment.id);
-            this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromisso deletado', life: 3000 });
-            this.appointment = {};
-            this.deleteAppointmentDialog = false;
+    confirmDeleteSelected() {
+        const ids = this.selectedAppointments.map(a => a.id!);
+        this.appointmentService.deleteAppointments(ids).then(() => {
+            this.appointments = this.appointments.filter(a => !ids.includes(a.id!));
+            this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromissos deletados', life: 3000 });
+            this.selectedAppointments = [];
+            this.deleteAppointmentsDialog = false;
         });
     }
-}
 
-hideDialog() {
-    this.appointmentDialog = false;
-    this.submitted = false;
-}
-
-saveAppointment() {
-    this.submitted = true;
-
-    if (this.appointment.customerName?.trim() && this.appointment.serviceType && this.appointment.serviceDate && this.appointment.serviceTime) {
+    confirmDelete() {
         if (this.appointment.id) {
-            this.appointmentService.updateAppointment(this.appointment).then(() => {
-                const index = this.appointments.findIndex(a => a.id === this.appointment.id);
-                if (index !== -1) {
-                    this.appointments[index] = this.appointment;
-                    this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromisso atualizado', life: 3000 });
-                }
-            });
-        } else {
-            this.appointmentService.addAppointment(this.appointment).then(() => {
-                this.appointments.push(this.appointment);
-                this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromisso criado', life: 3000 });
+            this.appointmentService.deleteAppointment(this.appointment.id).then(() => {
+                this.appointments = this.appointments.filter(a => a.id !== this.appointment.id);
+                this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromisso deletado', life: 3000 });
+                this.appointment = {};
+                this.deleteAppointmentDialog = false;
             });
         }
+    }
 
-        this.appointments = [...this.appointments];
+    hideDialog() {
         this.appointmentDialog = false;
-        this.appointment = {};
+        this.submitted = false;
     }
-}
 
-findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.appointments.length; i++) {
-        if (this.appointments[i].id === id) {
-            index = i;
-            break;
+    saveAppointment() {
+        this.submitted = true;
+
+        if (this.appointment.customerName?.trim() && this.appointment.serviceType && this.appointment.serviceDate && this.appointment.serviceTime) {
+            if (this.appointment.id) {
+                this.appointmentService.updateAppointment(this.appointment).then(() => {
+                    const index = this.appointments.findIndex(a => a.id === this.appointment.id);
+                    if (index !== -1) {
+                        this.appointments[index] = this.appointment;
+                        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromisso atualizado', life: 3000 });
+                    }
+                });
+            } else {
+                this.appointmentService.addAppointment(this.appointment).then(() => {
+                    this.appointments.push(this.appointment);
+                    this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Compromisso criado', life: 3000 });
+                });
+            }
+
+            this.appointments = [...this.appointments];
+            this.appointmentDialog = false;
+            this.appointment = {};
         }
     }
 
-    return index;
-}
+    findIndexById(id: string): number {
+        let index = -1;
+        for (let i = 0; i < this.appointments.length; i++) {
+            if (this.appointments[i].id === id) {
+                index = i;
+                break;
+            }
+        }
 
-onGlobalFilter(table: Table, event: Event) {
-    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-}
+        return index;
+    }
+
+    onGlobalFilter(table: Table, event: Event) {
+        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
 }

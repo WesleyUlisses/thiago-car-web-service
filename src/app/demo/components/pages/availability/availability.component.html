@@ -8,7 +8,18 @@
     </div>
 
     <!-- Painéis Condicionais -->
-    <div class="col-12" *ngIf="selectedPanel === 'customers'">
+
+    <div class="col-12" *ngIf="selectedPanel === 'calendar'">
+        <div class="card">
+            <div class="flex flex-column md:justify-content-between md:align-items-center">
+                <app-calendar/>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="col-12" *ngIf="selectedPanel === 'availability-table'">
         <div class="card">
             <div class="grid">
                 <div class="col-12">
@@ -59,39 +70,39 @@
                                     <th style="width: 3rem">
                                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                                     </th>
-                                    <th pSortableColumn="customerName">
-                                        Cliente
+                                    <th pSortableColumn="date">
+                                        {{this.cols[0].header}}
                                         <p-sortIcon
-                                            field="customerName"
+                                            field="date"
                                         ></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="vehicleModel">
-                                        Carro
+                                    <th pSortableColumn="startTime">
+                                        {{this.cols[1].header}}
                                         <p-sortIcon
                                             field="vehicleModel"
                                         ></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="serviceType">
-                                        Serviço
+                                    <th pSortableColumn="endTime">
+                                        {{this.cols[2].header}}
                                         <p-sortIcon
-                                            field="serviceType"
+                                            field="endTime"
                                         ></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="serviceDate">
-                                        Data
+                                    <th pSortableColumn="recurrency">
+                                        {{this.cols[3].header}}
                                         <p-sortIcon
-                                            field="serviceDate"
+                                            field="recurrency"
                                         ></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="serviceTime">
-                                        Horário
+                                        {{this.cols[4].header}}
                                         <p-sortIcon
                                             field="serviceTime"
                                         ></p-sortIcon>
                                     </th>
                                     <!-- <th pSortableColumn="mechanicName">Mecânico <p-sortIcon field="mechanicName"></p-sortIcon></th> -->
                                     <th pSortableColumn="status">
-                                        Status
+                                        {{this.cols[5].header}}
                                         <p-sortIcon field="status"></p-sortIcon>
                                     </th>
                                     <th></th>
@@ -178,7 +189,7 @@
                                                 pButton
                                                 pRipple
                                                 icon="pi pi-ban"
-                                                class="p-button-rounded p-button-rounded"
+                                                class="p-button-rounded p-button-danger"
                                                 (click)="
                                                     deleteAppointment(
                                                         appointment
@@ -678,32 +689,4 @@
     </div>
 
     <!-- tela 2 -->
-    <div class="col-12" *ngIf="selectedPanel === 'calendar'">
-        <div class="card">
-            <div class="flex flex-column md:justify-content-between md:align-items-center">
-                <app-calendar/>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-12" *ngIf="selectedPanel === 'kanban'">
-        <div class="card">
-            <app-kanban-board/>
-        </div>
-    </div>
-
-    <div class="col-12" *ngIf="selectedPanel === 'profile'">
-        <div class="card">
-            <h5>Painel de Perfil</h5>
-            <p>Configurações e informações do perfil.</p>
-        </div>
-    </div>
-
-    <div class="col-12" *ngIf="selectedPanel === 'quit'">
-        <div class="card">
-            <h5>Sair</h5>
-            <p>Você está prestes a sair.</p>
-        </div>
-    </div>
 </div>
