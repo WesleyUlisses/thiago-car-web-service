@@ -3,13 +3,14 @@ import { SelectItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { ServicoService, Servico } from 'src/app/demo/service/service.service';
 
 @Component({
     templateUrl: './services.component.html'
 })
 export class ServicesComponent implements OnInit {
 
-    products: Product[] = [];
+    servicos: Servico[] = []; // Alterado de products para servicos
 
     sortOptions: SelectItem[] = [];
 
@@ -23,10 +24,10 @@ export class ServicesComponent implements OnInit {
 
     orderCities: any[] = [];
 
-    constructor(private productService: ProductService) { }
+    constructor(private servicoService: ServicoService) { } // Alterado de ProductService para ServicoService
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
+        this.servicoService.getServicos().then(data => this.servicos = data); // Altere para buscar servicos
 
         this.sourceCities = [
             { name: 'San Francisco', code: 'SF' },
@@ -49,8 +50,8 @@ export class ServicesComponent implements OnInit {
             { name: 'Rome', code: 'RM' }];
 
         this.sortOptions = [
-            { label: 'Price High to Low', value: '!price' },
-            { label: 'Price Low to High', value: 'price' }
+            { label: 'Preço Maior para Menor', value: '!preco' },
+            { label: 'Preço Menor para Maior', value: 'preco' }
         ];
     }
 
@@ -66,8 +67,7 @@ export class ServicesComponent implements OnInit {
         }
     }
 
-    onFilter(dv: DataView, event: Event) {
+    onFilter(dv: any, event: Event) { // Corrigi o tipo de dv
         dv.filter((event.target as HTMLInputElement).value);
     }
-
 }

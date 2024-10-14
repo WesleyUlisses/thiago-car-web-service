@@ -1,0 +1,23 @@
+{"data": [
+    {
+      "id": 1,
+      "nome": "Reparo de Computadores",
+      "descricao": "Serviço completo de reparo de computadores e notebooks.",
+      "categoria": "Informática",
+      "preco": 150.00,
+      "disponibilidade": "DISPONIVEL",
+      "avaliacao": 4.5,
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj6xxlZVOQE3xdd2B1oB-uIbJTsKvagi7GpQ&s"
+    },
+    {
+      "id": 2,
+      "nome": "Instalação de Ar-Condicionado",
+      "descricao": "Instalação profissional de sistemas de ar-condicionado.",
+      "categoria": "Manutenção",
+      "preco": 300.00,
+      "disponibilidade": "DISPONIVEL",
+      "avaliacao": 4.0,
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj6xxlZVOQE3xdd2B1oB-uIbJTsKvagi7GpQ&s"
+    }
+]
+}

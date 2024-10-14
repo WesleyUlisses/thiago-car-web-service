@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
 import { ButtonModule } from 'primeng/button';
+import { ServicoService } from 'src/app/demo/service/service.service';
 
 @NgModule({
 	imports: [
@@ -24,6 +25,7 @@ import { ButtonModule } from 'primeng/button';
 		RatingModule,
 		ButtonModule
 	],
-	declarations: [ServicesComponent]
+	declarations: [ServicesComponent],
+    providers: [ServicoService]
 })
 export class ServicesModule { }
